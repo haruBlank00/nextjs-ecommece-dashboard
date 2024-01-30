@@ -1,0 +1,16 @@
+version: "3"
+services:
+  postgres:
+    image: postgres:latest
+    container_name: blank-commerce-db
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: pass
+      POSTGRES_DB: store
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
