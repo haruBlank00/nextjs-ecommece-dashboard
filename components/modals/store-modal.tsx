@@ -17,6 +17,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
+import toast from "react-hot-toast";
 
 const formSchema = z.object({
   name: z.string().min(1, { message: "Please enter your store name." }),
@@ -38,8 +39,9 @@ export const StoreModal = () => {
       setIsLoading(true);
 
       const response = await axios.post("/api/stores", values);
-      console.log({ response });
+      toast.success("Store created successfyllt.");
     } catch (error) {
+      toast.error("Couldn't create a store.");
     } finally {
       setIsLoading(false);
     }
