@@ -15,6 +15,11 @@ export function MainNav({ className, ...props }: { className: string }) {
       active: pathname === `/${params.storeId}/settings`,
     },
     {
+      href: `/${params.storeId}/billboards`,
+      label: "Billboards",
+      active: pathname === `/${params.storeId}/billboards`,
+    },
+    {
       href: `/${params.storeId}`,
       label: "Overview",
       active: pathname === `/${params.storeId}`,
