@@ -14,6 +14,11 @@ export function MainNav({ className, ...props }: { className: string }) {
       label: "Settings",
       active: pathname === `/${params.storeId}/settings`,
     },
+    {
+      href: `/${params.storeId}`,
+      label: "Overview",
+      active: pathname === `/${params.storeId}`,
+    },
   ];
 
   return (
