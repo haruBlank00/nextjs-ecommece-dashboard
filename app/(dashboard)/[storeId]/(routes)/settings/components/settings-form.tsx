@@ -14,9 +14,12 @@ import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Store } from "@prisma/client";
-import { Trash } from "lucide-react";
+import axios from "axios";
+import { Router, Trash } from "lucide-react";
+import { useParams, useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 import { z } from "zod";
 interface SettingsFormProps {
   initialData: Store;
@@ -35,11 +38,22 @@ const SettingsForm: React.FC<SettingsFormProps> = ({ initialData }) => {
   });
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const params = useParams();
+  const router = useRouter();
 
   const onSubmit = async (data: SettingsFormValues) => {
-    console.log({ data });
-    const { name } = data;
+    try {
+      setLoading(true);
+      await axios.patch(`/api/stores/${params.storeId}`, data);
+      router.refresh();
+      toast.success("Store updated.");
+    } catch (error) {
+      toast.error("Something went wrong!!");
+    } finally {
+      setLoading(false);
+    }
   };
+
   return (
     <>
       <div className="flex items-center justify-between">
