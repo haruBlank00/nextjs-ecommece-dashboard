@@ -1,7 +1,6 @@
 "use client";
-
+import { DevTool } from "@hookform/devtools";
 import AlertModal from "@/components/modals/alert-modal";
-import { ApiAlert } from "@/components/ui/api-alert";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -15,7 +14,6 @@ import { Heading } from "@/components/ui/heading";
 import ImageUpload from "@/components/ui/image-upload";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
-import { useOrigin } from "@/hooks/use-origin";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Billboard } from "@prisma/client";
 import axios from "axios";
@@ -30,7 +28,8 @@ interface BillboardFormProps {
 }
 
 const formSchema = z.object({
-  name: z.string().min(1, { message: "Please enter your store name" }),
+  label: z.string().min(1, { message: "Please enter your store name" }),
+  imageUrl: z.string().min(1, { message: "Please select an image to upload." }),
 });
 
 type BillboardFormValues = z.infer<typeof formSchema>;
@@ -47,7 +46,6 @@ const BillboardForm: React.FC<BillboardFormProps> = ({ initialData }) => {
   const [loading, setLoading] = useState(false);
   const params = useParams();
   const router = useRouter();
-  const origin = useOrigin();
 
   const title = initialData ? "Edit billboard" : "Create billboard";
   const description = initialData
@@ -57,10 +55,19 @@ const BillboardForm: React.FC<BillboardFormProps> = ({ initialData }) => {
   const action = initialData ? "Save changes" : "Create";
 
   const onSubmit = async (data: BillboardFormValues) => {
+    console.log("submitting...");
     try {
       setLoading(true);
-      console.log("creating bb");
-      console.log({ data });
+      if (initialData) {
+        await axios.patch(
+          `/api/${params.storeId}/billboards/${params.billboardId}`,
+          data
+        );
+      } else {
+        await axios.post(`/api/${params.storeId}/billboards`, data);
+      }
+      router.refresh();
+      toast.success(toastMessage);
     } catch (error) {
       toast.error("Something went wrong!!");
     } finally {
@@ -71,14 +78,15 @@ const BillboardForm: React.FC<BillboardFormProps> = ({ initialData }) => {
   const onDelete = async () => {
     try {
       setLoading(true);
-      await axios.delete(`/api/stores/${params.storeId}`);
+      await axios.delete(
+        `/api/${params.storeId}/billboards/${params.billboardId}`
+      );
+
       router.refresh();
       router.push("/");
       toast.success("Store deleted");
     } catch (error) {
-      toast.error(
-        "Make sure you removed all the products and categories first."
-      );
+      toast.error("Make sure you removed all categories using this billboard");
     } finally {
       setLoading(false);
       setOpen(false);
@@ -93,6 +101,9 @@ const BillboardForm: React.FC<BillboardFormProps> = ({ initialData }) => {
         loading={loading}
         onConfirm={onDelete}
       />
+
+      <DevTool control={form.control} />
+
       <div className="flex items-center justify-between">
         <Heading title={title} description={description} />
 
@@ -128,6 +139,7 @@ const BillboardForm: React.FC<BillboardFormProps> = ({ initialData }) => {
                       value={field.value ? [field.value] : []}
                       disabled={loading}
                       onChange={(url) => {
+                        console.log({ url });
                         field.onChange(url);
                       }}
                       onRemove={() => field.onChange("")}
@@ -163,10 +175,10 @@ const BillboardForm: React.FC<BillboardFormProps> = ({ initialData }) => {
           <Button disabled={loading} className="ml-auto" type="submit">
             {action}
           </Button>
-
-          <Separator />
         </form>
       </Form>
+
+      <Separator />
     </>
   );
 };
