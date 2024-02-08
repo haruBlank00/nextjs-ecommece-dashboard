@@ -8,6 +8,7 @@ import { Billboard } from "@prisma/client";
 import { Plus } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 import { columns } from "./columns";
+import { ApiList } from "@/components/ui/api-list";
 
 interface BillboardClientProps {
   data: Billboard[];
@@ -32,6 +33,10 @@ export const BillboardClient = ({ data }: BillboardClientProps) => {
       <Separator />
 
       <DataTable columns={columns} data={data} searchKey="label" />
+
+      <Heading title="API" description="Api calls for billboards" />
+      <Separator />
+      <ApiList entityName="billboards" entityIdName="billboardId" />
     </>
   );
 };
