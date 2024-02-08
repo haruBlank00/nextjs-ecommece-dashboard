@@ -82,15 +82,9 @@ export async function GET(
         storeId,
       },
     });
-
-    console.log(
-      `[BILLBOARD_get] - A new store has been created successfully. :)`,
-      billboard
-    );
-
     return NextResponse.json(billboard);
   } catch (error) {
-    console.log(`[BILLBOARD_POST]`, error);
+    console.log(`[BILLBOARD_GET]`, error);
     return new NextResponse("Internal error", { status: 500 });
   }
 }
