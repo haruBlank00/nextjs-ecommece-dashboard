@@ -78,11 +78,14 @@ export async function PATCH(
       return new NextResponse("Unauthorized", { status: 403 });
     }
 
-    const billboard = await prismadb.billboard.updateMany({
+    const billboard = await prismadb.billboard.update({
+      where: {
+        storeId,
+        id: params.billboardId,
+      },
       data: {
         label,
         imageUrl,
-        storeId,
       },
     });
 
@@ -120,7 +123,7 @@ export async function DELETE(
     }
 
     const billboardId = params.billboardId;
-    const billboard = await prismadb.billboard.delete({
+    const billboard = await prismadb.billboard.deleteMany({
       where: {
         id: billboardId,
         storeId,
