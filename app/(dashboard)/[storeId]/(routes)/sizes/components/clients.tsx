@@ -7,6 +7,8 @@ import { Separator } from "@/components/ui/separator";
 import { Size } from "@prisma/client";
 import { Plus } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
+import { columns } from "./columns";
+import { ApiList } from "@/components/ui/api-list";
 
 interface SizesClientProps {
   data: Size[];
@@ -32,7 +34,11 @@ export const SizesClient = ({ data, count }: SizesClientProps) => {
 
       <Separator />
 
-      <DataTable columns={[]} data={data} searchKey="value" />
+      <DataTable columns={columns} data={data} searchKey="value" />
+
+      <Heading title="API" description="Api calls for billboards" />
+      <Separator />
+      <ApiList entityName="sizes" entityIdName="sizeId" />
     </>
   );
 };
