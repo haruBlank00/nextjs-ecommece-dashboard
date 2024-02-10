@@ -66,8 +66,7 @@ model Size {
   storeId String
   store   Store  @relation("StoreToSize", fields: [storeId], references: [id])
 
-  productId String
-  products  Product[]
+  products Product[]
 
   name      String
   value     String
