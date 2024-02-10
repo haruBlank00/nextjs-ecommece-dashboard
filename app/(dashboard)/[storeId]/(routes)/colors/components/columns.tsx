@@ -5,13 +5,13 @@ import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown } from "lucide-react";
 import { CellAction } from "./cell-actions";
 
-export type SizesColumn = {
+export type ColorsColumn = {
   id: string;
   name: string;
   createdAt: string;
 };
 
-export const columns: ColumnDef<SizesColumn>[] = [
+export const columns: ColumnDef<ColorsColumn>[] = [
   {
     accessorKey: "name",
     header: () => {

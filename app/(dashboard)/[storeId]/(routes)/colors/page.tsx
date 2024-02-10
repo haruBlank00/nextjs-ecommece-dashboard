@@ -1,17 +1,17 @@
 import prismadb from "@/lib/prisma.db";
-import { SizesClient } from "./components/clients";
-import { Size } from "@prisma/client";
+import { Color } from "@prisma/client";
 import { format } from "date-fns";
+import { ColorsClient } from "./components/clients";
 
 interface Params {
   params: { storeId: string };
 }
 
-const SizesPage = async ({ params }: Params) => {
+const ColorsPage = async ({ params }: Params) => {
   const storeId = params.storeId;
 
-  const count = await prismadb.size.count();
-  const sizes = await prismadb.size.findMany({
+  const count = await prismadb.color.count();
+  const colors = await prismadb.color.findMany({
     where: {
       storeId,
     },
@@ -20,18 +20,18 @@ const SizesPage = async ({ params }: Params) => {
     },
   });
 
-  const formattedSizes = sizes.map((size: Size) => ({
-    ...size,
-    createdAt: format(size.createdAt, "MMMM do, yyyy"),
+  const formattedColors = colors.map((color: Color) => ({
+    ...color,
+    createdAt: format(color.createdAt, "MMMM do, yyyy"),
   }));
 
   return (
     <div className="flex-col">
       <div className="flex-1 space-y-4 p-8 pt-6">
-        <SizesClient data={formattedSizes} count={count} />
+        <ColorsClient data={formattedColors} count={count} />
       </div>
     </div>
   );
 };
 
-export default SizesPage;
+export default ColorsPage;

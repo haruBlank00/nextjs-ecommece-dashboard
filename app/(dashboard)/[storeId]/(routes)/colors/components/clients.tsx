@@ -10,23 +10,23 @@ import { useParams, useRouter } from "next/navigation";
 import { columns } from "./columns";
 import { ApiList } from "@/components/ui/api-list";
 
-interface SizesClientProps {
+interface ColorsClientProps {
   data: Size[];
   count: string;
 }
 
-export const SizesClient = ({ data, count }: SizesClientProps) => {
+export const ColorsClient = ({ data, count }: ColorsClientProps) => {
   const router = useRouter();
   const params = useParams<{ storeId: string }>();
 
-  const title = `Sizes ${count}`;
+  const title = `Colors ${count}`;
   const storeId = params.storeId;
   return (
     <>
       <div className="flex items-center justify-between">
         <Heading title={title} description="Manage sizes for your store" />
 
-        <Button onClick={() => router.push(`/${storeId}/sizes/new`)}>
+        <Button onClick={() => router.push(`/${storeId}/colors/new`)}>
           <Plus className="mr-2 h-4 w-4" />
           Add New
         </Button>
@@ -38,7 +38,7 @@ export const SizesClient = ({ data, count }: SizesClientProps) => {
 
       <Heading title="API" description="Api calls for billboards" />
       <Separator />
-      <ApiList entityName="sizes" entityIdName="sizeId" />
+      <ApiList entityName="colors" entityIdName="colorId" />
     </>
   );
 };
