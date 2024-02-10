@@ -31,7 +31,7 @@ export const ProductsClient = ({ data, count }: ProductClientProps) => {
 
       <Separator />
 
-      <DataTable columns={columns} data={data} searchKey="label" />
+      <DataTable columns={columns} data={data} searchKey="name" />
 
       <Heading title="API" description="Api calls for products" />
 

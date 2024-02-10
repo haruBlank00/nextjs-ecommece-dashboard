@@ -61,6 +61,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
   colors,
   sizes,
 }) => {
+  console.log({ initialData });
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: initialData
