@@ -7,11 +7,6 @@ export async function GET(
   { params }: { params: { storeId: string; productId: string } }
 ) {
   try {
-    const { userId } = auth();
-    if (!userId) {
-      return new NextResponse("Unauthenticated", { status: 401 });
-    }
-
     const storeId = params.storeId;
     if (!storeId) {
       return new NextResponse("StoreId is required", { status: 400 });
@@ -20,7 +15,6 @@ export async function GET(
     const storeByUserId = await prismadb.store.findFirst({
       where: {
         id: storeId,
-        userId,
       },
     });
 
@@ -114,7 +108,7 @@ export const PATCH = async (
       },
       data: {
         name,
-        price,
+        price: Number(price),
         categoryId,
         colorId,
         isArchived,
@@ -127,8 +121,8 @@ export const PATCH = async (
         },
       },
     });
-
-    const product = prismadb.product.update({
+    console.log({ images });
+    const product = await prismadb.product.update({
       where: {
         id: params.productId,
       },
@@ -140,7 +134,7 @@ export const PATCH = async (
         },
       },
     });
-
+    console.log({ product });
     return NextResponse.json(product);
   } catch (e) {
     console.log(`[SIZE_PATCH]`, e);

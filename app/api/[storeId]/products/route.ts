@@ -99,13 +99,14 @@ export async function GET(
   { params }: { params: { storeId: string } }
 ) {
   try {
+    console.log("here...");
     const { searchParams } = new URL(req.url);
     const categoryId = searchParams.get("categoryId") || undefined;
     const colorId = searchParams.get("colorId") || undefined;
     const sizeId = searchParams.get("sizeId") || undefined;
     const isFeatured = searchParams.get("isFeatured") || undefined;
     const isArchived = searchParams.get("isArchived") || undefined;
-
+    console.log({ searchParams });
     const storeId = params.storeId;
     if (!storeId) {
       return new NextResponse("StoreId is required", { status: 400 });

@@ -7,11 +7,6 @@ export async function GET(
   { params }: { params: { storeId: string; categoryId: string } }
 ) {
   try {
-    const { userId } = auth();
-    if (!userId) {
-      return new NextResponse("Unauthenticated", { status: 401 });
-    }
-
     const storeId = params.storeId;
     if (!storeId) {
       return new NextResponse("StoreId is required", { status: 400 });
@@ -20,7 +15,6 @@ export async function GET(
     const storeByUserId = await prismadb.store.findFirst({
       where: {
         id: storeId,
-        userId,
       },
     });
 
@@ -29,15 +23,18 @@ export async function GET(
     }
 
     const categoryid = params.categoryId;
-    const billboard = await prismadb.category.findFirst({
+    const category = await prismadb.category.findFirst({
       where: {
         id: categoryid,
         storeId,
       },
+      include: {
+        billboard: true,
+      },
     });
-    return NextResponse.json(billboard);
+    return NextResponse.json(category);
   } catch (error) {
-    console.log(`[BILLBOARD_GET_${params.categoryId}]`, error);
+    console.log(`[CATEGORY_GET_${params.categoryId}]`, error);
     return new NextResponse("Internal Error", { status: 500 });
   }
 }

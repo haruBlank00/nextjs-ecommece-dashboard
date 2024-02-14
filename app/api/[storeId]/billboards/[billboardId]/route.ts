@@ -7,10 +7,10 @@ export async function GET(
   { params }: { params: { storeId: string; billboardId: string } }
 ) {
   try {
-    const { userId } = auth();
-    if (!userId) {
-      return new NextResponse("Unauthenticated", { status: 401 });
-    }
+    // const { userId } = auth();
+    // if (!userId) {
+    //   return new NextResponse("Unauthenticated", { status: 401 });
+    // }
 
     const storeId = params.storeId;
     if (!storeId) {
@@ -20,7 +20,6 @@ export async function GET(
     const storeByUserId = await prismadb.store.findFirst({
       where: {
         id: storeId,
-        userId,
       },
     });
 
