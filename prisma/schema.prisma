@@ -144,15 +144,15 @@ model Order {
   store   Store  @relation("StoreToOrder", fields: [storeId], references: [id])
 
   orderItems OrderItem[]
+  isPaid     Boolean     @default(false)
 
-  isPaid Boolean @default(false)
-
-  phone   String @default("")
-  address String @default("")
+  addressId String
+  Address   Address @relation(fields: [addressId], references: [id])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  @@index([addressId])
   @@index([storeId])
 }
 
@@ -170,4 +170,24 @@ model OrderItem {
 
   @@index([orderId])
   @@index([productId])
+}
+
+model Address {
+  id String @id @default(uuid())
+
+  firstName       String
+  lastName        String
+  street1         String
+  street2         String?
+  city            String
+  district        String
+  province        String
+  country         String
+  phone1          Int
+  phone2          Int?
+  additionalNotes String
+  Order           Order[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
